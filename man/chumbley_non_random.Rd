@@ -25,6 +25,8 @@ list with
 \item {diff_shift_n} Number of different shift offsets used
 \item {U} observed U statistic
 \item {p_value} Corresponding p-value
+\item {same_shift} correlation values corresponding to the same shift offset
+\item {diff_shift} correlation values corresponding to the different shift offset
 }
 }
 \description{

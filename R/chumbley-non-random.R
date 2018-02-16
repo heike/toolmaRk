@@ -16,6 +16,8 @@
 #' \item {diff_shift_n} Number of different shift offsets used
 #' \item {U} observed U statistic
 #' \item {p_value} Corresponding p-value
+#' \item {same_shift} correlation values corresponding to the same shift offset
+#' \item {diff_shift} correlation values corresponding to the different shift offset
 #' }
 chumbley_non_random <- function(data1, data2, window_opt = 500, window_val = 50, coarse = .25){
 
@@ -152,7 +154,9 @@ chumbley_non_random <- function(data1, data2, window_opt = 500, window_val = 50,
   list(same_shift_n = n, ##Number of same shift offsets used
        diff_shift_n = m, ##Number of different shift offsets used
        U = obs_U, ##observed U-statistic
-       p_value = pval) ##Corresponding p-value
+       p_value = pval, ##Corresponding p-value
+       same_shift = same_shift$U,
+       diff_shift = diff_shift$U)
 }
 
 
