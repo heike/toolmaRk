@@ -64,7 +64,7 @@ chumbley_non_random <- function(data1, data2, window_opt = 500, window_val = 50,
   y2_mat_opt <- apply(scale(y2_mat_opt), 2, unity)
   y1_mat_opt <- apply(scale(y1_mat_opt), 2, unity)
   corr_mat_opt <- t(y2_mat_opt) %*% y1_mat_opt ##correlation matrix
-  max_corr_opt_loc <- which(corr_mat_opt == max(corr_mat_opt), arr.ind = TRUE) ##pair of windows maximizing the correlation
+  max_corr_opt_loc <- which(corr_mat_opt == max(corr_mat_opt, na.rm=TRUE), arr.ind = TRUE) ##pair of windows maximizing the correlation
   
   
   ###################
