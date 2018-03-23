@@ -35,7 +35,8 @@ chumbley_non_random <- function(data1, data2, window_opt = 500, window_val = 50,
     y1 <- data1 - lowess(y = data1,  x = 1:nrow(data1), f= coarse)$y
     y2 <- data2 - lowess(y = data2,  x = 1:nrow(data2), f= coarse)$y
   } else {
-    ys <- na.omit(cbind(data1, data2))
+    if (any(is.na(y1)) | any(is.na(y2))) browser()
+    
     y1 = ys[,1]
     y2 = ys[,2]
   }
