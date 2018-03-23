@@ -31,9 +31,14 @@ chumbley_non_random <- function(data1, data2, window_opt = 500, window_val = 50,
   data2 <- matrix(data2[round((0.01*nrow(data2))):round(0.99*nrow(data2)),], ncol = 1)
   
   ##Normalize the tool marks
-  y1 <- data1 - lowess(y = data1,  x = 1:nrow(data1), f= coarse)$y
-  y2 <- data2 - lowess(y = data2,  x = 1:nrow(data2), f= coarse)$y
-  
+  if (!is.null(coarse)) {
+    y1 <- data1 - lowess(y = data1,  x = 1:nrow(data1), f= coarse)$y
+    y2 <- data2 - lowess(y = data2,  x = 1:nrow(data2), f= coarse)$y
+  } else {
+    y1 = data1
+    y2 = data2
+  }
+    
   
   ############################################
   ##Compute the observed maximum correlation##
