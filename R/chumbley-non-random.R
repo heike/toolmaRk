@@ -268,7 +268,8 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
   idx <- min(length(rows), length(cols))
   my_same_shift <- data.frame(rows=rows[1:idx], 
                            cols=cols[1:idx])
-  my_same_shift <- subset(my_same_shift, rows>0 & cols>0)
+  my_same_shift <- subset(my_same_shift, rows>0 & cols>0 & 
+                            rows <= dim(corr_mat_val)[1] & cols <= dim(corr_mat_val)[2])
   my_same_shift$U <- as.vector(apply(my_same_shift, MARGIN = 1,
                                      function(y) {
                                        corr_mat_val[y[1], y[2]]
@@ -278,7 +279,8 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
   ##along a single anti-diagonal
   my_diff_shift <- data.frame(rows=rows[1:idx], 
                               cols=cols[c(2:idx,1)])
-  my_diff_shift <- subset(my_diff_shift, rows>0 & cols>0)
+  my_diff_shift <- subset(my_diff_shift, rows>0 & cols>0 &
+                            rows <= dim(corr_mat_val)[1] & cols <= dim(corr_mat_val)[2])
   my_diff_shift$U <- as.vector(apply(my_diff_shift, MARGIN = 1,
                                      function(y) {
                                        corr_mat_val[y[1], y[2]]
