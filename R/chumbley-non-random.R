@@ -275,7 +275,7 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
   my_same_shift <- data.frame()
   my_diff_shift <- data.frame()
   
-  if (length(idx) > 0) {
+  if (idx > 0) {
   my_same_shift <- data.frame(rows=rows[1:idx], 
                            cols=cols[1:idx])
   my_same_shift <- subset(my_same_shift, rows>0 & cols>0 & 
