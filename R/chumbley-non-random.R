@@ -263,9 +263,19 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
   
   ##Pull out the correlations that correspond to windows with the same offset as the largest correlation found in the optimization step
   shift <- max_corr_opt_loc[2]-max_corr_opt_loc[1]
-  rows <- seq(from=1, to=length(y1)-window_val, by=window_val)
-  cols <- seq(from=1+shift, to=length(y2)-window_val, by=window_val) 
+  rows <- NULL
+  if (length(y1)-window_val > 1)
+    rows <- seq(from=1, to=length(y1)-window_val, by=window_val)
+  
+  cols <- NULL
+  if (length(y2)-window_val > 1+shift)
+    cols <- seq(from=1+shift, to=length(y2)-window_val, by=window_val) 
+  
   idx <- min(length(rows), length(cols))
+  my_same_shift <- data.frame()
+  my_diff_shift <- data.frame()
+  
+  if (length(idx) > 0) {
   my_same_shift <- data.frame(rows=rows[1:idx], 
                            cols=cols[1:idx])
   my_same_shift <- subset(my_same_shift, rows>0 & cols>0 & 
@@ -285,7 +295,7 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
                                      function(y) {
                                        corr_mat_val[y[1], y[2]]
                                      }))
-  
+  }
   ######################################
   ##Compute the Ustatistic if possible##
   ######################################
