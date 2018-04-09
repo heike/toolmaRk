@@ -262,39 +262,36 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
   corr_mat_val <- t(y2_mat_val) %*% y1_mat_val
   
   ##Pull out the correlations that correspond to windows with the same offset as the largest correlation found in the optimization step
-  shift <- max_corr_opt_loc[2]-max_corr_opt_loc[1]
-  rows <- NULL
-  if (length(y1)-window_val > 1)
-    rows <- seq(from=1, to=length(y1)-window_val, by=window_val)
-  
-  cols <- NULL
-  if (length(y2)-window_val > 1+shift)
-    cols <- seq(from=1+shift, to=length(y2)-window_val, by=window_val) 
-  
-  idx <- min(length(rows), length(cols))
-  my_same_shift <- data.frame()
-  my_diff_shift <- data.frame()
-  
-  if (idx > 0) {
-  my_same_shift <- data.frame(rows=rows[1:idx], 
-                           cols=cols[1:idx])
-  my_same_shift <- subset(my_same_shift, rows>0 & cols>0 & 
-                            rows <= dim(corr_mat_val)[1] & cols <= dim(corr_mat_val)[2])
-  my_same_shift$U <- as.vector(apply(my_same_shift, MARGIN = 1,
-                                     function(y) {
-                                       corr_mat_val[y[1], y[2]]
-                                     }))
-  
-  ##Pull out the correlations that correspond to windows with different offset as the largest correlation found in the optimization step
-  my_diff_shift <- data.frame(rows=rows[1:idx], 
-                              cols=cols[idx:1])
-  my_diff_shift <- subset(my_diff_shift, rows>0 & cols>0 &
-                            rows <= dim(corr_mat_val)[1] & cols <= dim(corr_mat_val)[2])
-  my_diff_shift$U <- as.vector(apply(my_diff_shift, MARGIN = 1,
-                                     function(y) {
-                                       corr_mat_val[y[1], y[2]]
-                                     }))
+  ##Pull out the correlations that correspond to windows with the same offset as the largest correlation found in the optimization step
+  same_shift <- data.frame(row = NA, col = NA, U = NA)
+  rows <- max_corr_opt_loc[1] + (window_opt - window_val)
+  cols <- max_corr_opt_loc[2] + (window_opt - window_val)
+  while(rows + window_val < nrow(corr_mat_val) & cols + window_val < ncol(corr_mat_val)){
+    
+    rows <- rows + window_val
+    cols <- cols + window_val
+    same_shift <- rbind(same_shift, c(rows, cols, corr_mat_val[rows,cols]))
+    
   }
+  rows <- max_corr_opt_loc[1]
+  cols <- max_corr_opt_loc[2]
+  while(rows - window_val > 0 & cols - window_val > 0){
+    
+    rows <- rows - window_val
+    cols <- cols - window_val
+    same_shift <- rbind(same_shift, c(rows, cols, corr_mat_val[rows, cols]))
+    
+  }
+  same_shift <- same_shift[-1,]
+  
+  my_same_shift <- same_shift
+  my_diff_shift <- data.frame(
+    row = my_same_shift$row,
+    col = rev(my_same_shift$col)
+    )
+  my_diff_shift$U = apply(my_diff_shift, MARGIN=1, FUN = 
+                            function(x) corr_mat_val[x[1], x[2]])
+
   ######################################
   ##Compute the Ustatistic if possible##
   ######################################
