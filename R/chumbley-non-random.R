@@ -283,7 +283,6 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
     
   }
   same_shift <- same_shift[-1,]
-  browser()
   my_same_shift <- same_shift
   my_diff_shift <- data.frame(
     row = sort(my_same_shift$row),
