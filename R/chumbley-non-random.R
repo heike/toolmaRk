@@ -283,12 +283,16 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
     
   }
   same_shift <- same_shift[-1,]
-  
+  browser()
   my_same_shift <- same_shift
   my_diff_shift <- data.frame(
-    row = my_same_shift$row,
-    col = rev(my_same_shift$col)
+    row = sort(my_same_shift$row),
+    col = sort(my_same_shift$col, decreasing=TRUE)
     )
+  # remove the middle value from a set of odd rows:
+  idx <- sort(same_shift$col) == sort(same_shift$col, decreasing=TRUE)
+  my_diff_shift <- subset(my_diff_shift, idx==FALSE)
+  
   my_diff_shift$U = apply(my_diff_shift, MARGIN=1, FUN = 
                             function(x) corr_mat_val[x[1], x[2]])
 
