@@ -286,9 +286,8 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
                                      }))
   
   ##Pull out the correlations that correspond to windows with different offset as the largest correlation found in the optimization step
-  ##along a single anti-diagonal
   my_diff_shift <- data.frame(rows=rows[1:idx], 
-                              cols=cols[c(2:idx,1)])
+                              cols=cols[idx:1])
   my_diff_shift <- subset(my_diff_shift, rows>0 & cols>0 &
                             rows <= dim(corr_mat_val)[1] & cols <= dim(corr_mat_val)[2])
   my_diff_shift$U <- as.vector(apply(my_diff_shift, MARGIN = 1,
@@ -323,8 +322,8 @@ chumbley_non_random_adj <- function(data1, data2, window_opt = 500, window_val =
   }
   pval <- 1 - pnorm(obs_U)
   
-  list(my_same_shift_n = n, ##Number of same shift offsets used
-       my_diff_shift_n = m, ##Number of different shift offsets used
+  list(same_shift_n = n, ##Number of same shift offsets used
+       diff_shift_n = m, ##Number of different shift offsets used
        U = obs_U, ##observed U-statistic
        p_value = pval, ##Corresponding p-value
        same_shift = my_same_shift$U,
